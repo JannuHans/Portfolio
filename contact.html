@@ -503,7 +503,11 @@
                 this.currentStep = 1;
                 this.totalSteps = 3;
                 this.formData = {};
-                this.backendUrl = 'http://localhost:3001/api/contact'; // Update this for production
+                if (window.location.hostname === 'localhost') {
+                this.backendUrl = 'http://localhost:3001/api/contact';
+                } else {
+                this.backendUrl = '/api/contact';
+                }
                 this.init();
             }
 
