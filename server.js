@@ -11,8 +11,6 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// Serve static files from root directory (for local development)
-// On Vercel, static files are served automatically
 app.use(express.static(__dirname));
 
 // Email configuration
@@ -153,6 +151,12 @@ app.post('/api/contact', async (req, res) => {
 // Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Email service ready for portfolio contact form`);
 });
 
 module.exports = app;
