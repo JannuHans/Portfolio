@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// Serve static files from root directory (for local development)
+// On Vercel, static files are served automatically
+app.use(express.static('.'));
 
 // Email configuration
 const transporter = nodemailer.createTransport({
@@ -152,10 +155,13 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Email service ready for portfolio contact form`);
-});
+// Start server (only when running locally, not on Vercel)
+// Vercel automatically handles the serverless function, so we don't need app.listen()
+if (!process.env.VERCEL && !process.env.VERCEL_URL) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+        console.log(`Email service ready for portfolio contact form`);
+    });
+}
 
 module.exports = app;
